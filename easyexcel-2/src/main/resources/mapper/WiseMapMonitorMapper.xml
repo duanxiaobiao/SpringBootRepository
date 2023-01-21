@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dzbiao.easyexcel2.dao.WiseMapMonitorMapper">
+
+    <resultMap id="BaseMap" type="com.dzbiao.easyexcel2.domain.entity.WiseMapDataMonitorEntity">
+        <id property="id" column="id" />
+        <result column="type" property="type" />
+        <result column="name" property="name" />
+        <result column="source_name" property="sourceName" />
+        <result column="index_date" property="indexDate" />
+        <result column="data_total" property="dataTotal" />
+        <result column="data_total_rate" property="dataTotalRate" />
+        <result column="user_total" property="userTotal" />
+        <result column="user_total_rate" property="userTotalRate" />
+        <result column="data_detail" property="dataDetail" />
+        <result column="gps_coverage_rate" property="gpsCoverageRate" />
+        <result column="mau_coverage_rate" property="mauCoverageRate" />
+        <result column="is_exception" property="isException" />
+        <result column="trigger_condition" property="triggerCondition" />
+        <result column="channel" property="channel" />
+        <result column="createTime" property="createTime" />
+        <result column="updateTime" property="updateTime" />
+    </resultMap>
+
+
+    <select id="list" resultMap="BaseMap">
+        select monitor.*, source.name, source.source_name
+        from wisemap_data_monitor monitor
+        left join index_source source
+        on monitor.type = source.type
+        where monitor.type = #{type}
+    </select>
+
+
+
+
+
+</mapper>
