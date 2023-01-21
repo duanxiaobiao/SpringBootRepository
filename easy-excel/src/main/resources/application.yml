@@ -1,0 +1,39 @@
+
+#tomcat服务器配置 http://localhost:8080/excel
+server:
+  address: localhost
+  port: 8080
+  #字符编码设置
+  servlet:
+    encoding:
+      charset: utf-8
+      enabled: true
+      force: true
+    context-path: /excel   #工程的站点根路径
+
+#配置视图解析器的前缀和后缀
+spring:
+  mvc:
+    view:
+      prefix: /WEB-INF/
+      suffix: .jsp
+  #配置数据源
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/test1?useUnicode=true&serverTimezone=Asia/Shanghai&characterEncoding=utf-8
+    username: root
+    password: root
+
+#加载mybatis配置文件
+mybatis:
+  #扫描到mybatis中的.xml文件
+  mapper-locations: classpath:mappers/*.xml
+  #给mybatis开启驼峰命名法则
+  configuration:
+    map-underscore-to-camel-case: true
+
+pagehelper:
+  #分页插件会自动检测当前的数据库链接，自动选择合适的分页方式。你也可以配置helperDialect属性来指定分页插件使用哪种方言。
+  helper-dialect: mysql
+  # 启用合理化，如果pageNum < 1会查询第一页，如果pageNum > pages会查询最后一页
+  reasonable: true

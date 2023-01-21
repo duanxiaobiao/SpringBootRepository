@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dzbiao.easyexcel.dao.SysMapper">
+
+    <resultMap id="BaseMap" type="com.dzbiao.easyexcel.entity.SysUser">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="g_name" property="gName" jdbcType="VARCHAR" />
+        <result column="g_price" property="goodPrice" jdbcType="DOUBLE" />
+        <result column="buy_num" property="buyNum" jdbcType="INTEGER" />
+        <result column="g_num" property="goodNum" jdbcType="INTEGER" />
+        <result column="g_url" property="goodUrl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="list" resultMap="BaseMap">
+        select * from sys_user
+    </select>
+
+</mapper>
