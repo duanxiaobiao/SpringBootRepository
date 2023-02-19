@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dzbiao.springbootkafkaconsumer.dao.SwitchLogMapper">
+
+    <resultMap id="BaseMap" type="com.dzbiao.springbootkafkaconsumer.entity.SwitchLog">
+        <id property="id" column="id" />
+        <result column="index_name" property="indexName" />
+        <result column="index_date" property="indexDate" />
+        <result column="index_name_date" property="indexNameDate" />
+    </resultMap>
+
+    <!--更新-->
+    <update id="updateSwitchLog">
+        update switch_log
+        set index_name_date = #{indexNameDate}
+        where index_name = 'wisemap_cust_inf_flex'
+    </update>
+
+
+</mapper>
