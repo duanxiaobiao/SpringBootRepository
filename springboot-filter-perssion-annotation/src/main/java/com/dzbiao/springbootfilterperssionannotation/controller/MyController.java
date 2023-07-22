@@ -1,6 +1,7 @@
 package com.dzbiao.springbootfilterperssionannotation.controller;
 
 import com.dzbiao.springbootfilterperssionannotation.common.annotation.CustomPermission;
+import com.dzbiao.springbootfilterperssionannotation.common.response.Result;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,12 +18,12 @@ public class MyController {
 
     @CustomPermission
     @GetMapping("/api/secure")
-    public String secure() {
-        return "Secure API";
+    public Result secure() {
+        return Result.SUCCESS("Secure API");
     }
 
 
-    @GetMapping("/api/unsecure")
+    @GetMapping("/web/unsecure")
     public String unsecure() {
         return "Unsecure API";
     }
