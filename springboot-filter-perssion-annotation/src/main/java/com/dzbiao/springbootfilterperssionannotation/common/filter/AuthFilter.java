@@ -1,5 +1,6 @@
 package com.dzbiao.springbootfilterperssionannotation.common.filter;
 
+import com.dzbiao.springbootfilterperssionannotation.common.annotation.CustomPermission;
 import com.dzbiao.springbootfilterperssionannotation.common.exception.AuthException;
 import com.dzbiao.springbootfilterperssionannotation.common.filter.authstrategy.AuthorizationStrategy;
 import com.dzbiao.springbootfilterperssionannotation.common.filter.authstrategy.AuthorizationStrategyFactory;
@@ -7,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerExceptionResolver;
+import org.springframework.web.servlet.HandlerExecutionChain;
 import org.springframework.web.servlet.HandlerMapping;
 
 import javax.annotation.Resource;
@@ -17,6 +20,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
@@ -50,7 +54,7 @@ public class AuthFilter implements Filter {
         String uri = httpRequest.getRequestURI();
 
         try {
-            if (passUri(uri)) {
+            if (passUri(uri, httpRequest)) {
                 chain.doFilter(httpRequest, httpResponse);
                 return;
             }
@@ -74,7 +78,7 @@ public class AuthFilter implements Filter {
      * @param requestURI
      * @return
      */
-    private boolean passUri(String requestURI) {
+    private boolean passUri(String requestURI, HttpServletRequest httpRequest) {
         // 放行以/api/*开头的接口
         if (requestURI.startsWith("/api/")) {
             return true;
@@ -86,7 +90,7 @@ public class AuthFilter implements Filter {
         }
 
         // 检查是否存在自定义权限注解@IgnorePersimisson，存在则放行
-        if (hasPermission()) {
+        if (hasPermission(httpRequest)) {
             return true;
         }
 
@@ -99,10 +103,23 @@ public class AuthFilter implements Filter {
     }
 
 
-    private boolean hasPermission() {
-        // 进行权限验证的逻辑实现
-        return false;
+    private boolean hasPermission(HttpServletRequest httpRequest) {
+        Method method = getMethod(httpRequest);
+        return (method != null && method.isAnnotationPresent(CustomPermission.class));
     }
 
+
+    private Method getMethod(HttpServletRequest request) {
+        HandlerExecutionChain handler = null;
+        try {
+            handler = new HandlerExecutionChain(handlerMapping.getHandler(request).getHandler());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (handler != null && handler.getHandler() instanceof HandlerMethod) {
+            return ((HandlerMethod) handler.getHandler()).getMethod();
+        }
+        return null;
+    }
 }
 
